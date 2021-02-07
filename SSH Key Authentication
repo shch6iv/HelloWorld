@@ -1,0 +1,24 @@
+While password authentication can be made secure with complex passwords, changing the SSH port, and disabling the root user.
+It is best to make use of SSH keys for accessing your VM. 
+You use these to protect your cloud server against brute force password attacks by using a public-private SSH key pair. 
+
+become root
+# ssh-keygen
+This will prompt you to set a location for the keys. The default location is the ~/.ssh directory, and the default filenames would be id_rsa for the private, and id_rsa.pub for the public.
+Pressing ENTER 
+you’ll be prompted to enter a passphrase
+
+# cat ~.ssh/id_rsa.pub
+Copy the entire output to you clipboard and SSH into the server you wish to install the public key on.
+you may need to create the ~/.ssh directory if one is not already present. You can do so by running the following command:
+
+# mkdir -p ~/.ssh
+
+ Now you’ll need to create the file to place the output of the public key you copied. 
+# vi ~/.ssh/authorized_keys
+
+ Finally, you’ll need to modify the permissions on the ~/.ssh and the authorized_keys files with the following commands:
+# chmod 700 ~/.ssh
+# chmod 600 ~/.ssh/authorized_keys
+
+Once this is done, test that you’re able to log into your VM without being prompted for a password. If access without a password is granted, your SSH Key setup was successful. You can now modify your /etc/ssh/sshd_config file and change PasswordAuthentication yes to PasswordAuthentication no.
